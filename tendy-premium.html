@@ -1,0 +1,1393 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>neusta Tendy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Geist:wght@400;450;500;550;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #FBFBF9;
+  --surface: #FFFFFF;
+  --surface-subtle: #F6F6F3;
+  --surface-hover: #F3F3EE;
+
+  --text-primary: #0A0A0A;
+  --text-secondary: #5C5C57;
+  --text-tertiary: #8F8F88;
+  --text-quaternary: #B5B5AE;
+
+  --border: rgba(10, 10, 10, 0.08);
+  --border-strong: rgba(10, 10, 10, 0.14);
+  --border-subtle: rgba(10, 10, 10, 0.05);
+
+  --accent: #00D26A;
+  --accent-hover: #00B85C;
+  --accent-glow: rgba(0, 210, 106, 0.22);
+  --accent-tint: rgba(0, 210, 106, 0.08);
+  --accent-text: #006B35;
+
+  --urgent: #C2410C;
+  --urgent-tint: rgba(194, 65, 12, 0.07);
+  --info: #1E40AF;
+  --info-tint: rgba(30, 64, 175, 0.06);
+  --favorite: #6D28D9;
+  --favorite-tint: rgba(109, 40, 217, 0.07);
+
+  --shadow-xs: 0 1px 0 rgba(10, 10, 10, 0.03);
+  --shadow-sm: 0 1px 2px rgba(10, 10, 10, 0.04), 0 0 0 1px rgba(10, 10, 10, 0.04);
+  --shadow-md: 0 2px 8px rgba(10, 10, 10, 0.04), 0 1px 2px rgba(10, 10, 10, 0.06), 0 0 0 1px rgba(10, 10, 10, 0.05);
+  --shadow-lg: 0 10px 40px -12px rgba(10, 10, 10, 0.12), 0 4px 12px -4px rgba(10, 10, 10, 0.08), 0 0 0 1px rgba(10, 10, 10, 0.05);
+
+  --r-xs: 4px;
+  --r-sm: 6px;
+  --r-md: 8px;
+  --r-lg: 10px;
+  --r-xl: 14px;
+
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-sans: 'Geist', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'Geist Mono', 'SF Mono', Menlo, monospace;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body {
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: 13.5px;
+  line-height: 1.5;
+  letter-spacing: -0.006em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 15% 20%, rgba(0, 210, 106, 0.025) 0%, transparent 45%),
+    radial-gradient(circle at 85% 80%, rgba(30, 64, 175, 0.02) 0%, transparent 45%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.app {
+  display: grid;
+  grid-template-columns: 256px 1fr;
+  min-height: 100vh;
+  position: relative;
+  z-index: 1;
+}
+
+.topbar {
+  grid-column: 1 / -1;
+  height: 52px;
+  background: rgba(251, 251, 249, 0.72);
+  backdrop-filter: saturate(180%) blur(24px);
+  -webkit-backdrop-filter: saturate(180%) blur(24px);
+  border-bottom: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  padding: 0 16px 0 20px;
+  gap: 12px;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding-right: 16px;
+  height: 28px;
+}
+
+.brand-mark {
+  width: 24px;
+  height: 24px;
+  background: #0A0A0A;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.brand-mark::after {
+  content: '';
+  width: 9px;
+  height: 9px;
+  background: var(--accent);
+  border-radius: 50%;
+  box-shadow: 0 0 10px var(--accent-glow);
+  animation: pulse 3s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 10px var(--accent-glow); }
+  50% { box-shadow: 0 0 16px var(--accent-glow), 0 0 4px rgba(0, 210, 106, 0.4); }
+}
+
+.brand-name {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 16px;
+  letter-spacing: -0.025em;
+  color: var(--text-primary);
+}
+
+.brand-name em {
+  font-style: italic;
+  font-weight: 400;
+  color: var(--text-secondary);
+}
+
+.tabs {
+  display: flex;
+  align-items: center;
+  background: var(--surface-subtle);
+  border-radius: 8px;
+  padding: 3px;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.tab {
+  padding: 5px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.tab.active {
+  background: var(--surface);
+  color: var(--text-primary);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06), 0 0 0 1px rgba(0, 0, 0, 0.04);
+}
+
+.tab-badge {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 500;
+  color: var(--text-tertiary);
+  background: var(--surface-hover);
+  padding: 1px 5px;
+  border-radius: 3px;
+  font-feature-settings: 'tnum';
+}
+
+.tab.active .tab-badge {
+  color: var(--text-secondary);
+  background: var(--surface-subtle);
+}
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: auto;
+}
+
+.top-btn {
+  height: 30px;
+  padding: 0 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border-radius: 6px;
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.12s ease;
+  font-family: inherit;
+}
+
+.top-btn:hover { background: var(--surface-hover); }
+
+.top-btn.ai {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 0 10px 0 8px;
+  box-shadow: var(--shadow-xs);
+}
+
+.ai-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--accent);
+  border-radius: 50%;
+  box-shadow: 0 0 6px var(--accent-glow);
+}
+
+.icon-btn {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: background 0.12s ease;
+  position: relative;
+}
+
+.icon-btn:hover { background: var(--surface-hover); color: var(--text-primary); }
+
+.notif-dot {
+  position: absolute;
+  top: 6px;
+  right: 7px;
+  width: 6px;
+  height: 6px;
+  background: var(--urgent);
+  border-radius: 50%;
+  border: 1.5px solid var(--bg);
+}
+
+.user-chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 3px 10px 3px 3px;
+  border-radius: 20px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: background 0.12s ease;
+  margin-left: 4px;
+  font-family: inherit;
+}
+
+.user-chip:hover { background: var(--surface-hover); }
+
+.avatar {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #FF8A65 0%, #D4621A 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 10.5px;
+  font-weight: 600;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+}
+
+.user-chip-name {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.sidebar {
+  padding: 16px 12px;
+  border-right: 1px solid var(--border-subtle);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  position: sticky;
+  top: 52px;
+  height: calc(100vh - 52px);
+  overflow-y: auto;
+}
+
+.sidebar::-webkit-scrollbar { width: 0; }
+
+.sb-section { padding: 4px 0; }
+
+.sb-label {
+  font-size: 10.5px;
+  font-weight: 550;
+  color: var(--text-tertiary);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0 8px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sb-label .count {
+  font-family: var(--font-mono);
+  font-feature-settings: 'tnum';
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--text-quaternary);
+  font-size: 10.5px;
+}
+
+.sb-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 450;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.12s ease;
+  user-select: none;
+}
+
+.sb-item:hover { background: var(--surface-hover); color: var(--text-primary); }
+
+.sb-item.active {
+  background: var(--surface);
+  color: var(--text-primary);
+  font-weight: 500;
+  box-shadow: var(--shadow-xs), 0 0 0 1px var(--border);
+}
+
+.sb-item .ico {
+  width: 14px;
+  height: 14px;
+  color: var(--text-tertiary);
+  flex-shrink: 0;
+}
+
+.sb-item.active .ico { color: var(--text-primary); }
+
+.sb-item .count {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-quaternary);
+  font-feature-settings: 'tnum';
+  font-weight: 500;
+}
+
+.sb-search {
+  position: relative;
+  margin: 0 0 8px 0;
+}
+
+.sb-search input {
+  width: 100%;
+  height: 30px;
+  padding: 0 10px 0 28px;
+  background: var(--surface-subtle);
+  border: 1px solid transparent;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 12.5px;
+  color: var(--text-primary);
+  transition: all 0.15s ease;
+}
+
+.sb-search input::placeholder { color: var(--text-tertiary); }
+
+.sb-search input:focus {
+  outline: none;
+  background: var(--surface);
+  border-color: var(--border);
+  box-shadow: 0 0 0 3px rgba(0, 210, 106, 0.08);
+}
+
+.sb-search svg {
+  position: absolute;
+  left: 9px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-tertiary);
+  pointer-events: none;
+}
+
+.sb-kbd {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-quaternary);
+  background: var(--surface);
+  padding: 1px 4px;
+  border-radius: 3px;
+  border: 1px solid var(--border-subtle);
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding: 0 4px;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 6px 3px 8px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-primary);
+  cursor: default;
+  transition: all 0.12s ease;
+  box-shadow: var(--shadow-xs);
+}
+
+.chip:hover { border-color: var(--border-strong); }
+
+.chip .x {
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-tertiary);
+  cursor: pointer;
+}
+
+.chip .x:hover { background: var(--surface-hover); color: var(--text-primary); }
+
+.chip-add {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  background: transparent;
+  border: 1px dashed var(--border-strong);
+  border-radius: 5px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-tertiary);
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.12s ease;
+}
+
+.chip-add:hover {
+  color: var(--text-primary);
+  border-color: var(--text-tertiary);
+  border-style: solid;
+}
+
+.sb-divider {
+  height: 1px;
+  background: var(--border-subtle);
+  margin: 10px 4px;
+}
+
+.sb-footer {
+  margin-top: auto;
+  padding-top: 8px;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.sb-user {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 7px 8px;
+  border-radius: 7px;
+  cursor: pointer;
+  transition: background 0.12s ease;
+}
+
+.sb-user:hover { background: var(--surface-hover); }
+
+.sb-user .avatar {
+  width: 26px;
+  height: 26px;
+  font-size: 11px;
+}
+
+.sb-user-info { flex: 1; min-width: 0; }
+
+.sb-user-name {
+  font-size: 12.5px;
+  font-weight: 550;
+  color: var(--text-primary);
+  line-height: 1.25;
+}
+
+.sb-user-role {
+  font-size: 11px;
+  color: var(--text-tertiary);
+  line-height: 1.25;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.toolbar {
+  padding: 18px 28px 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px solid var(--border-subtle);
+  background: var(--bg);
+  position: sticky;
+  top: 52px;
+  z-index: 20;
+}
+
+.search {
+  flex: 1;
+  max-width: 480px;
+  position: relative;
+}
+
+.search input {
+  width: 100%;
+  height: 34px;
+  padding: 0 12px 0 34px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  font-family: inherit;
+  font-size: 13px;
+  color: var(--text-primary);
+  box-shadow: var(--shadow-xs);
+  transition: all 0.15s ease;
+}
+
+.search input::placeholder { color: var(--text-tertiary); }
+
+.search input:focus {
+  outline: none;
+  border-color: var(--text-tertiary);
+  box-shadow: 0 0 0 3px rgba(0, 210, 106, 0.1), var(--shadow-xs);
+}
+
+.search svg {
+  position: absolute;
+  left: 11px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-tertiary);
+}
+
+.toolbar-meta {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-left: auto;
+  font-size: 12.5px;
+}
+
+.meta-count {
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+  font-feature-settings: 'tnum';
+  font-size: 12px;
+  letter-spacing: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.meta-count .sep { color: var(--text-quaternary); }
+
+.meta-relevant {
+  color: var(--accent-text);
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.meta-relevant::before {
+  content: '';
+  width: 5px;
+  height: 5px;
+  background: var(--accent);
+  border-radius: 50%;
+  box-shadow: 0 0 6px var(--accent-glow);
+}
+
+.sort-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 28px;
+  padding: 0 10px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--text-primary);
+  cursor: pointer;
+  box-shadow: var(--shadow-xs);
+  transition: all 0.12s ease;
+}
+
+.sort-btn:hover { border-color: var(--border-strong); }
+.sort-btn .label { color: var(--text-tertiary); font-weight: 450; }
+
+.feed {
+  padding: 20px 28px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 1100px;
+}
+
+.section-header {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: 12px 2px 8px;
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-style: italic;
+  font-weight: 500;
+  color: var(--text-secondary);
+  letter-spacing: -0.01em;
+}
+
+.section-line {
+  flex: 1;
+  height: 1px;
+  background: var(--border-subtle);
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-xl);
+  padding: 16px 18px 14px;
+  box-shadow: var(--shadow-xs);
+  transition: all 0.18s cubic-bezier(0.2, 0, 0, 1);
+  position: relative;
+  cursor: pointer;
+}
+
+.card:hover {
+  border-color: var(--border-strong);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+}
+
+.card.favorited::before {
+  content: '';
+  position: absolute;
+  left: -1px;
+  top: 14px;
+  bottom: 14px;
+  width: 2px;
+  background: var(--favorite);
+  border-radius: 0 2px 2px 0;
+}
+
+.card-row-top {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.card-labels {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  padding-top: 2px;
+}
+
+.label {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 7px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 550;
+  letter-spacing: 0.01em;
+  line-height: 1.4;
+}
+
+.label.new { background: var(--info-tint); color: var(--info); }
+.label.favorite { background: var(--favorite-tint); color: var(--favorite); }
+.label.activity { background: var(--accent-tint); color: var(--accent-text); }
+
+.label.activity::before {
+  content: '';
+  width: 5px;
+  height: 5px;
+  background: var(--accent);
+  border-radius: 50%;
+  animation: activity-pulse 2s ease-in-out infinite;
+}
+
+@keyframes activity-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.card-actions {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  opacity: 0.55;
+  transition: opacity 0.15s ease;
+}
+
+.card:hover .card-actions { opacity: 1; }
+
+.card-action {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  background: transparent;
+  border: none;
+  color: var(--text-tertiary);
+  cursor: pointer;
+  transition: all 0.12s ease;
+}
+
+.card-action:hover {
+  background: var(--surface-hover);
+  color: var(--text-primary);
+}
+
+.card-action.active {
+  color: var(--favorite);
+  background: var(--favorite-tint);
+  opacity: 1;
+}
+
+.card-title {
+  font-family: var(--font-sans);
+  font-size: 15.5px;
+  font-weight: 550;
+  color: var(--text-primary);
+  line-height: 1.35;
+  letter-spacing: -0.015em;
+  margin-bottom: 10px;
+}
+
+.card-meta {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  padding-top: 2px;
+}
+
+.meta-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.meta-item .ico {
+  color: var(--text-quaternary);
+  flex-shrink: 0;
+}
+
+.meta-item.date {
+  font-family: var(--font-mono);
+  font-feature-settings: 'tnum';
+  font-size: 11.5px;
+  letter-spacing: 0;
+}
+
+.meta-item.date.urgent {
+  color: var(--urgent);
+  font-weight: 500;
+}
+
+.meta-item.date.urgent .ico { color: var(--urgent); }
+
+.meta-docs {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 2px 8px 2px 6px;
+  background: var(--surface-subtle);
+  border: 1px solid var(--border-subtle);
+  border-radius: 5px;
+  font-size: 11.5px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  transition: all 0.12s ease;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.meta-docs:hover {
+  background: var(--surface-hover);
+  color: var(--text-primary);
+  border-color: var(--border);
+}
+
+.meta-docs .count {
+  font-family: var(--font-mono);
+  font-feature-settings: 'tnum';
+  font-size: 11px;
+  color: var(--text-tertiary);
+}
+
+.card-comment {
+  margin-top: 10px;
+  padding: 9px 11px;
+  background: var(--surface-subtle);
+  border-radius: 7px;
+  font-size: 12.5px;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  line-height: 1.5;
+  border-left: 2px solid var(--border-strong);
+}
+
+.card-comment strong {
+  color: var(--text-primary);
+  font-weight: 550;
+}
+
+.card-comment .ico {
+  color: var(--text-tertiary);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.card-note {
+  margin-top: 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 0;
+  font-size: 12px;
+  color: var(--text-tertiary);
+  cursor: pointer;
+  transition: color 0.12s ease;
+}
+
+.card-note:hover { color: var(--text-primary); }
+
+.card-pulse {
+  position: absolute;
+  top: 18px;
+  right: -4px;
+  width: 8px;
+  height: 8px;
+}
+
+.card-pulse::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--accent);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--accent-glow);
+}
+
+.card-pulse::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  background: var(--accent);
+  border-radius: 50%;
+  opacity: 0.3;
+  animation: ping 2.5s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+@keyframes ping {
+  0% { transform: scale(0.6); opacity: 0.5; }
+  100% { transform: scale(1.8); opacity: 0; }
+}
+
+.ico { width: 14px; height: 14px; stroke-width: 1.5; }
+
+@media (max-width: 900px) {
+  .app { grid-template-columns: 1fr; }
+  .sidebar { display: none; }
+  .feed { padding: 16px; }
+  .toolbar { padding: 12px 16px; }
+  .tabs { position: static; transform: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark"></div>
+      <div class="brand-name">neusta <em>Tendy</em></div>
+    </div>
+
+    <nav class="tabs">
+      <div class="tab active">
+        Ausschreibungen
+        <span class="tab-badge">1,600</span>
+      </div>
+      <div class="tab">
+        Projektbörse
+        <span class="tab-badge">247</span>
+      </div>
+    </nav>
+
+    <div class="topbar-right">
+      <button class="top-btn ai">
+        <span class="ai-dot"></span>
+        Tendy AI
+      </button>
+      <button class="icon-btn" aria-label="Benachrichtigungen">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/>
+          <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>
+        </svg>
+        <span class="notif-dot"></span>
+      </button>
+      <button class="icon-btn" aria-label="Einstellungen">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="3"/>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+        </svg>
+      </button>
+      <button class="user-chip">
+        <span class="avatar">BK</span>
+        <span class="user-chip-name">Berdan</span>
+      </button>
+    </div>
+  </header>
+
+  <aside class="sidebar">
+
+    <div class="sb-search">
+      <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="7"/>
+        <path d="m21 21-4.3-4.3"/>
+      </svg>
+      <input type="text" placeholder="Suchen...">
+      <span class="sb-kbd">⌘K</span>
+    </div>
+
+    <div class="sb-section">
+      <div class="sb-label">Ansicht <span class="count">460</span></div>
+      <div class="sb-item active">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+        Alle
+        <span class="count">424</span>
+      </div>
+      <div class="sb-item">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        Neu
+        <span class="count">28</span>
+      </div>
+      <div class="sb-item">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        Favoriten
+        <span class="count">7</span>
+      </div>
+      <div class="sb-item">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        Verworfen
+        <span class="count">13</span>
+      </div>
+    </div>
+
+    <div class="sb-divider"></div>
+
+    <div class="sb-section">
+      <div class="sb-label">Keywords <span class="count">4</span></div>
+      <div class="chips">
+        <span class="chip">SAP <span class="x">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </span></span>
+        <span class="chip">KI / AI <span class="x">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </span></span>
+        <span class="chip">Cloud <span class="x">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </span></span>
+        <span class="chip">IT-Security <span class="x">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </span></span>
+        <button class="chip-add">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+          Hinzufügen
+        </button>
+      </div>
+    </div>
+
+    <div class="sb-divider"></div>
+
+    <div class="sb-section">
+      <div class="sb-label">Filter</div>
+      <div class="sb-item">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        Region
+        <span class="count">Alle</span>
+      </div>
+      <div class="sb-item">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        Frist
+        <span class="count">30 Tage</span>
+      </div>
+      <div class="sb-item">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6v6H9z"/></svg>
+        Typ
+        <span class="count">Alle</span>
+      </div>
+    </div>
+
+    <div class="sb-footer">
+      <div class="sb-user">
+        <span class="avatar">BK</span>
+        <div class="sb-user-info">
+          <div class="sb-user-name">Berdan Kaya</div>
+          <div class="sb-user-role">team neusta · Admin</div>
+        </div>
+        <svg class="ico" style="color: var(--text-tertiary);" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M7 10l5 5 5-5"/></svg>
+      </div>
+    </div>
+
+  </aside>
+
+  <main class="main">
+
+    <div class="toolbar">
+      <div class="search">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="7"/>
+          <path d="m21 21-4.3-4.3"/>
+        </svg>
+        <input type="text" placeholder="Suche nach Keywords, Städten, Organisationen…">
+      </div>
+
+      <div class="toolbar-meta">
+        <span class="meta-count">
+          <span>424 <span style="color: var(--text-tertiary)">von 1.600</span></span>
+          <span class="sep">·</span>
+          <span class="meta-relevant">400 relevant</span>
+        </span>
+        <button class="sort-btn">
+          <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M6 12h12M10 18h4"/></svg>
+          <span class="label">Sortierung:</span>
+          Relevanz
+          <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" style="color: var(--text-tertiary)"><path d="M7 10l5 5 5-5"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="feed">
+
+      <div class="section-header">
+        <span class="section-title">Heute</span>
+        <div class="section-line"></div>
+      </div>
+
+      <article class="card favorited">
+        <div class="card-pulse"></div>
+        <div class="card-row-top">
+          <div class="card-labels">
+            <span class="label new">Neu</span>
+            <span class="label favorite">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              Favorit
+            </span>
+            <span class="label activity">In Bearbeitung · Tascha</span>
+          </div>
+          <div class="card-actions">
+            <button class="card-action active" aria-label="Favorit">
+              <svg class="ico" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            </button>
+            <button class="card-action" aria-label="Zuweisen">
+              <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 11l-3-3m0 0l-3 3m3-3v8"/></svg>
+            </button>
+            <button class="card-action" aria-label="Verwerfen">
+              <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <h3 class="card-title">Beschaffung und Einführung eines Dokumenten- und Prozessmanagement-Systems (DMS/ECM) als Cloud-Lösung</h3>
+
+        <div class="card-meta">
+          <span class="meta-item">
+            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V7l8-4v18M19 21V11l-6-4"/></svg>
+            Verkehrsverbund Mittelsachsen GmbH
+          </span>
+          <span class="meta-item date urgent">
+            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+            07.05.2026 · in 13 Tagen
+          </span>
+          <span class="meta-item">
+            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            Sachsen
+          </span>
+          <button class="meta-docs">
+            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
+            Unterlagen <span class="count">8</span>
+          </button>
+        </div>
+
+        <div class="card-comment">
+          <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <div><strong>Berdan</strong> · Warum wird mir diese Ausschreibung angezeigt, obwohl sie Public-Fokus hat?</div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-row-top">
+          <div class="card-labels">
+            <span class="label new">Neu</span>
+          </div>
+          <div class="card-actions">
+            <button class="card-action" aria-label="Favorit">
+              <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            </button>
+            <button class="card-action" aria-label="Zuweisen">
+              <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 11l-3-3m0 0l-3 3m3-3v8"/></svg>
+            </button>
+            <button class="card-action" aria-label="Verwerfen">
+              <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <h3 class="card-title">GUVH — IT-Dienstleistungsunterstützung</h3>
+
+        <div class="card-meta">
+          <span class="meta-item">
+            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V7l8-4v18M19 21V11l-6-4"/></svg>
+            Gemeinde-Unfallversicherungsverband Hannover
+          </span>
+          <span class="meta-item date">
+            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+            14.05.2026
+          </span>
+          <span class="meta-item">
+            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            Niedersachsen
+          </span>
+          <button class="meta-docs">
+            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
+            Unterlagen <span class="count">10</span>
+          </button>
+        </div>
+
+        <div class="card-note">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+          Notiz hinzufügen
+        </div>
+      </article>
+
+      <div class="section-header">
+        <span class="section-title">Gestern</span>
+        <div class="section-line"></div>
+      </div>
+
+      <article class="card">
+        <div class="card-row-top">
+          <div class="card-labels">
+            <span class="label new">Neu</span>
+          </div>
+          <div class="card-actions">
+            <button class="card-action" aria-label="Favorit">
+              <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            </button>
+            <button class="card-action" aria-label="Zuweisen">
+              <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 11l-3-3m0 0l-3 3m3-3v8"/></svg>
+            </button>
+            <button class="card-action" aria-label="Verwerfen">
+              <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <h3 class="card-title">Erstellung des Fachverfahrens KESS</h3>
+
+        <div class="card-meta">
+          <span class="meta-item">
+            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V7l8-4v18M19 21V11l-6-4"/></svg>
+            Informationsverarbeitung Niedersachsen (IT.Niedersachsen)
+          </span>
+          <span class="meta-item date">
+            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+            23.05.2026
+          </span>
+          <span class="meta-item">
+            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            Deutschland
+          </span>
+          <button class="meta-docs">
+            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
+            Unterlagen <span class="count">3</span>
+          </button>
+        </div>
+
+        <div class="card-note">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+          Notiz hinzufügen
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-row-top">
+          <div class="card-labels">
+            <span class="label new">Neu</span>
+          </div>
+          <div class="card-actions">
+            <button class="card-action" aria-label="Favorit">
+              <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            </button>
+            <button class="card-action" aria-label="Zuweisen">
+              <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 11l-3-3m0 0l-3 3m3-3v8"/></svg>
+            </button>
+            <button class="card-action" aria-label="Verwerfen">
+              <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <h3 class="card-title">Rahmenvereinbarung für SAP Application Management und SAP HCM Hosting und Basisadministration</h3>
+
+        <div class="card-meta">
+          <span class="meta-item">
+            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V7l8-4v18M19 21V11l-6-4"/></svg>
+            Helmholtz-Zentrum für Umweltforschung — UFZ
+          </span>
+          <span class="meta-item date">
+            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+            23.05.2026
+          </span>
+          <span class="meta-item">
+            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            Deutschland
+          </span>
+          <button class="meta-docs">
+            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
+            Unterlagen <span class="count">8</span>
+          </button>
+        </div>
+
+        <div class="card-note">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+          Notiz hinzufügen
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-row-top">
+          <div class="card-labels">
+            <span class="label new">Neu</span>
+          </div>
+          <div class="card-actions">
+            <button class="card-action" aria-label="Favorit">
+              <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            </button>
+            <button class="card-action" aria-label="Zuweisen">
+              <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 11l-3-3m0 0l-3 3m3-3v8"/></svg>
+            </button>
+            <button class="card-action" aria-label="Verwerfen">
+              <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <h3 class="card-title">Cloud-Migrations- und DevOps-Beratung für die öffentliche Verwaltung</h3>
+
+        <div class="card-meta">
+          <span class="meta-item">
+            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V7l8-4v18M19 21V11l-6-4"/></svg>
+            Bundesagentur für Arbeit
+          </span>
+          <span class="meta-item date">
+            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+            02.06.2026
+          </span>
+          <span class="meta-item">
+            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            Bayern
+          </span>
+          <button class="meta-docs">
+            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
+            Unterlagen <span class="count">12</span>
+          </button>
+        </div>
+
+        <div class="card-note">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+          Notiz hinzufügen
+        </div>
+      </article>
+
+    </div>
+  </main>
+
+</div>
+
+<script>
+  document.querySelectorAll('.card-action').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const svg = btn.querySelector('svg');
+      if (btn.getAttribute('aria-label') === 'Favorit') {
+        btn.classList.toggle('active');
+        if (btn.classList.contains('active')) {
+          svg.setAttribute('fill', 'currentColor');
+        } else {
+          svg.setAttribute('fill', 'none');
+        }
+      }
+    });
+  });
+
+  document.querySelectorAll('.tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+    });
+  });
+
+  const firstSection = document.querySelector('.sidebar .sb-section');
+  if (firstSection) {
+    firstSection.querySelectorAll('.sb-item').forEach(item => {
+      item.addEventListener('click', () => {
+        firstSection.querySelectorAll('.sb-item').forEach(i => i.classList.remove('active'));
+        item.classList.add('active');
+      });
+    });
+  }
+</script>
+
+</body>
+</html>
